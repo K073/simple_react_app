@@ -11,8 +11,14 @@ class AdSearch extends React.Component {
     componentDidMount() {
         this.props.fetchCityListRequest();
         this.props.fetchPositionListRequest();
-        this.props.getSearchListRequest();
+        this.props.getSearchListRequest({});
     }
+
+    selectChangeHandler = name => e => {
+      this.setState({
+          [name]: e.target.value
+      })
+    };
 
     render() {
         const {position, city} = this.state;
@@ -20,13 +26,15 @@ class AdSearch extends React.Component {
 
         return <div className="container">
             <header>
-                <select value={position}>
+                <select onChange={this.selectChangeHandler("city")} value={city}>
+                    <option value="">select city</option>
                     {cityList && cityList.map(data => <option value={data.id}>{data.name}</option>)}
                 </select>
-                <select value={city}>
+                <select onChange={this.selectChangeHandler("position")} value={position}>
+                    <option value="">select position</option>
                     {positionList && positionList.map(data => <option value={data.id}>{data.title}</option>)}
                 </select>
-                <button onClick={() => getSearchListRequest({position: position, city: city})}>
+                <button onClick={() => getSearchListRequest({position_id: position, city_id: city})}>
                     search
                 </button>
             </header>
